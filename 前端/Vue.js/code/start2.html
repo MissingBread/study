@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>跑马灯效果</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<!--引入vue.js-->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+    	<input type="button" value="浪起来" @click="lang">
+    	<input type="button" value="低调" v-on:click="stop">
+    	<h2>{{ msg }}</h2>
+    </div>
+
+	<script >
+		var app=new Vue({
+			//在vue实例中，要获取data上的数据，或者是要调用methods中的方法，必须通过
+			//this.数据属性名 或者是 this.方法名 来访问，这里this表示new出来的app实例
+			//因为vue.js参考了MVVM模式，所以一旦自己的数据改变会自动渲染到页面，而不需要自己去渲染
+			el: '#app',
+			data: {
+				msg: '猥琐发育，别浪~~！',	
+				intervalid: null //在data中定义定时器id
+			},
+			methods: {
+				lang(){
+					//这里使用=>将this的指向改成vue实例，否则this会指向当前函数
+					//开启定时器
+					if(this.intervalid != null) return;
+					this.intervalid=setInterval( () => {
+						var start = this.msg.substring(0,1)
+						var end = this.msg.substring(1)
+						this.msg=end+start
+					},400)
+				},
+				stop(){//停止定时器
+					clearInterval(this.intervalid)
+					this.intervalid=null
+				}
+			}
+		})
+	</script>
+
+</body>
+</html>

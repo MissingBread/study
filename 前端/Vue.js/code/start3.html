@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>V-on事件修饰符</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<link href="" rel="stylesheet">
+<style type="text/css">
+	.inner{
+		height: 50px;
+		background-color: pink;
+	}
+</style>
+</head>
+<body>
+    <div id="app">
+    	<!--观察输出为冒泡输出,添加.stop后只有按钮的提示被输出-->
+    	<!--
+    	<div class="inner" @click="divHandler">
+    		<input type="button" value="点击" @click.stop="btn">
+    	</div>
+    	-->
+
+		<!--添加.capture后观察输出为捕获输出，与冒泡相反-->
+		<!--
+    	<div class="inner" @click.capture="divHandler">
+    		<input type="button" value="点击" @click="btn">
+    	</div>
+    	-->
+
+		<!--添加.self后观察输出,只有点击div时才会输出，点击按钮不会输出-->
+    	<div class="inner" @click.self="divHandler">
+    		<input type="button" value="点击" @click="btn">
+    	</div>
+
+		<!--添加.prevent可以阻止跳转-->
+		<a href="http://www.baidu.com" @click.prevent="linkClick">百度</a>
+		<!--添加.once只触发一次事件处理函数-->
+		<a href="http://www.baidu.com" @click.prevent.once="linkClick">百度两次</a>
+
+    </div>
+
+    <script >
+		var app=new Vue({
+			el: '#app',
+			data: {
+				
+			},
+			methods: {
+				btn(){
+					console.log("按钮btn被点击。。。")
+				},
+				divHandler(){
+					console.log("div inner被点击。。。")
+				},
+				linkClick(){
+					console.log("连接被点击了。。。")
+				}
+			}
+		})
+	</script>
+</body>
+</html>

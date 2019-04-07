@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>vue.js入门</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<style >
+	[v-cloak]{
+		display: none;
+	}
+</style>
+</head>
+<body>
+    <div id="app">
+    	<!--v-cloak解决插值表达式闪烁的问题-->
+    	<p v-cloak>===={{ msg }}===</p>
+    	<!--默认v-text没有闪烁问题-->
+    	<!--但是v-text会覆盖原有的内容，而上面的插值表达式只是一个占位符，不会替换所有内容-->
+    	<h4 v-text="msg">==========</h4>
+    	<div>{{ msg2 }}</div>
+    	<div v-text="msg2"></div>
+    	<!--v-html可以解析将字符串解析成html-->
+    	<div v-html="msg2">1232</div>
+    	<!-- v-bind 是vue.js提供的一个绑定属性的指令-->
+    	<input type="button" value="按钮" v-bind:title="myTitle">
+    	<!-- v-bind 可以被简写成 :要绑定的属性-->
+    	<!-- v-bind 中，可以写合法的js表达式-->
+    	<input type="button" value="按钮2" :title="myTitle+'123'">
+    	<!-- v-on 中，可以给控件绑定指定的事件监听-->
+    	<input type="button" value="按钮3" v-on:click="show">
+    	<!-- v-on 中，可以缩写为 @-->
+    	<input type="button" value="按钮4" @click="show">
+    </div>
+
+<script >
+	var app = new Vue({
+  		el: '#app',
+  		data: {
+   		msg: 'Hello Vue!',
+   		msg2: '<h2>哈哈哈哈</h2>',
+   		myTitle: '这是一个按钮'
+ 	 },
+ 	 methods: { //这个methods中定义了当前vue实例中所有可用的方法
+ 	 	show: function(){
+ 	 		alert("hello ")
+ 	 	}
+ 	 }
+})
+</script>
+
+</body>
+</html>
