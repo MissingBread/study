@@ -70,6 +70,7 @@ Node为js提供了很多服务器级别的api,这些api被封装到了一些具�
 ---------------------
 ## 3.npm
 node package manager包管理工具，在npmjs.com中可以搜索需要的包
+
 ### 3.1npm常用命令
 + npm init 使用向导的方式生成一个项目
     * `npm init -y`可以跳过向导快速生成
@@ -90,12 +91,18 @@ node package manager包管理工具，在npmjs.com中可以搜索需要的包
 + `npm 命令 --help`
     * 查看指定命令的帮助
     * 例如可以通过`npm uninstall --help`来查看uninstall的简写
+
 ### 3.2package.json
 + 建议每一个项目都建立一个`package.json`文件
 + 这个文件可以通过npm的`npm init`命令来初始化出来
 + 在json文件中有一个很重要的选项就是`dependencies`，里面记录了项目的依赖信息
     * 如果不小心删了依赖，可以通过json文件找回
     * 建议执行`npm install 包名`的时候加上`--save`选项可以将下载的包信息自动保存在json文件中
++ 在新版本的npm中，安装包还会生成package-lock.json文件
++ 在新版本中，不需要加入--save参数就可以自动更新依赖
++ 而package-lock.json文件记录了依赖的详细信息，重新install的时候会提升速度
++ 此外package-lock.json还可以锁定依赖的版本，防止install的时候自动升级到最新版本
+
 ### 3.3解决被墙问题
 通过以下命令安装国内镜像
 `npm install --global cnpm`
@@ -159,6 +166,56 @@ app.use(function (req, res) {
 })
 ```
 
+## MongoDB数据库
+### 介绍
++ 非关系型数据库，储存的是key-value的键值对
++ mongoDB是长的最像关系型数据库的非关系型数据库
+    * 数据库=》数据库
+    * 数据表=》集合（数组）
+    * 表记录=》（文档对象）
++ mongodb不需要设计表结构
++ 可以任意往里面添加数据，没有结构性一说
+
+### 启动和关闭
++ 启动
+```
+//默认使用执行该命令所处盘符下的/data/db作为自己的存储目录
+//所以启动之前如果没有这个目录就要新建
+mongod
+```
++ 停止
+    * 直接关闭cmd或者ctrl+c打断
+
+### 连接和退出
++ 连接：在cmd输入`mongo`即可连接数据库
++ 退出：在cmd输入`exit`即可连接数据库
+
+### 基本命令（参见菜鸟教程）
++ `show dbs`查看显示所有数据库
++ `db`查看当前操作的数据库
++ `use 数据库名`切换到指定数据库（如果没有会新建）
+
+### node连接mongodb
++ 使用第三方包`mongose`，基于mongoDB官方的mongo包在做了一次封装
++ 官网 https://mongoosejs.com/
+
+### 一些概念
++ 数据库，集合，文档
+```
+{
+    test:{//数据库
+        users:{//集合
+            {name: 'zhansan', age: '18'},//文档
+            {name: 'zhansan', age: '18'},
+            {}
+        }
+    }
+    ....
+}
+```
++ 很灵活，只需要指定往那个数据库的那个集合进行操作就可以了
+
+
 ------------
 ## 其他
 
@@ -182,7 +239,11 @@ nodemon app.js
 只要是通过nodemon来启动的服务，工具会自动监听修改然后重启服务
 
 ### 获取异步函数返回的数据
-可以通过回调函数来实现
++ 常见的异步操作有
+    * setTimeout
+    * fs的文件操作
+    * ajax
++ 可以通过回调函数来实现,实际就是说函数也是一种数据类型
 ```
 var fs = reqiure('fs')
 
