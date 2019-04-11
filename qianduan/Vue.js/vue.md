@@ -11,7 +11,10 @@
 + MVVM是前端视图层的概念，主要关注视图层分离，也就是说：MVVM将前端的视图层分成了三部分Model，View，ViewModel
 + MVVM一个很重要的方面是解决了controller越来越臃肿的问题，但是MVVM和MVC指的是前端还是前后端都包括呢(从web app角度来说？)
 
-## Vue.js中的几个参数
+## Vue.js参考
+>http://doc.vue-js.com/v2/guide/list.html
+
+### Vue.js中的几个参数
 + 参见code/start.html
 + `v-cloak`解决插值表达式闪烁的问题，还需要在head标签中加入`<style >[v-cloak]{ display: none;}</style>`
 + `v-text`默认v-text没有闪烁问题,但是v-text会覆盖原有的内容
@@ -28,8 +31,46 @@
         - .stop会阻止所有嵌套的事件冒泡
         - .self只会阻止当前元素
 
-## 跑马灯效果的实现
+### 跑马灯效果的实现
 + 参见code/start2.html
+
+### Vue.js中数据的双向绑定
++ 使用`v-model`可以实现表单元素和Model数据的双向绑定
++ 见start4.html
+
+### Vue.js中使用样式
+#### 使用class样式
++ 数组
+`<h1 :class="['red','thin']">这是一个h1</h1>`
++ 在数组中使用三元表达式
+`<h1 :class="['red','thin'，isactive?'active':'']">这是一个h1</h1>`
++ 使用嵌套对象
+`<h1 :class="['red','thin'，{'active':isactive}]">这是一个h1</h1>`
++ 直接使用对象
+`<h1 :class="{red: true，active: true, thin: true}">这是一个h1</h1>`
+
+#### 使用内联样式
++ 直接在元素上使用`:style`的形式，书写样式对象
+`<h1 :style="{color: 'red'，'font-size': '40px'}">这是一个h1</h1>`
++ 将样式对象定义到`data`中，并直接引用到`:style`中
+    * 在data上定义样式
+    ```
+    data:{
+        h1Style:{color: 'red'，'font-size': '40px'}
+    }
+    ```
+    * 在元素中，通过属性绑定，将样式应用到元素中
+`<h1 :style="h1Style">这是一个h1</h1>`
++ 在data中定义多个样式对应，然后引用
+    * 在data上定义样式
+    ```
+    data:{
+        h1Style:{color: 'red'，'font-size': '40px'}，
+         h1Style2:{fontStyle: 'italic'}
+    }
+    ```
+    * 在元素中，通过属性绑定，将样式应用到元素中
+`<h1 :style="[h1Style,h1Style2]">这是一个h1</h1>`
 
 
 

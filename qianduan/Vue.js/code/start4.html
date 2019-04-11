@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>start4</title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="" rel="stylesheet">
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<h4>{{ msg }}</h4>
+		<!--使用`v-model`可以实现表单元素和Model数据的双向绑定-->
+		<!--`v-model`只能使用在表单元素中-->
+		<!--input(radio,text,email,adress) select checkbox textarea等-->
+		<input type="text" style="width: 50%" v-model="msg">
+	</div>
+
+	<script type="text/javascript">
+		var vm=new Vue({
+			el: '#app',
+			data: {
+				msg: '大家好才是真的好'
+			},
+			methods: {
+			}
+		})
+	</script>
+</body>
+</html>
