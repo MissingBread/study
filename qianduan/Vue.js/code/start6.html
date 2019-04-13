@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>组件化</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="./lib/vue-2.4.0.js"></script>
+<link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+<body>
+    <div id="app">
+        <!--组件使用直接使用标签的形式，但是驼峰命名需要转换成-  -->
+        <my-com1></my-com1>
+        <mycom></mycom>
+        <mycom3></mycom3>
+    </div>
+
+    <div id="app2">
+        <mycom></mycom>
+        <login></login>
+        <msg></msg>
+    </div>
+
+    <!--在被控制的#app外部，使用template元素，定义组件的html模板结构-->
+    <template id="tmpl">
+        <div>
+            <h3>这是一个tmpl组件</h3>
+            <h2>好用</h2>
+        </div>
+    </template>
+
+<script >
+    //以下的三种方式都是全局的组件，所有的vm实例都可以使用
+    //第一种方式：使用Vue.extend来创建全局的Vue组件
+    // var com1=Vue.extend({
+    //     template: '<h3>这是一个组件</h3>'//通过这个属性指定了组件要展示的html结构
+    // })
+
+    // Vue.component('myCom1',com1)
+    // Vue.component('mycom1',com1)//不使用驼峰则直接<mycom1></mycom1>调用即可
+
+    //第二种方式
+    Vue.component('myCom1',Vue.extend({
+         template: '<h3>这是一个组件</h3>'
+    }))
+
+    //进一步简化
+    Vue.component('mycom',{
+        // template: '<h1>这是一个组件</h1>'
+        //注意template中的元素要有唯一一个根标签，下面的方式会报错
+        // template: '<h1>这是一个组件</h1><span>123</span>'
+        template: '<div><h1>这是一个组件</h1><span>123</span></div>'
+    })
+
+    //第三种方式创建
+    Vue.component('mycom3',{
+        template: '#tmpl'
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+
+        },
+        methods:{
+
+        }
+    })
+
+    var vm2 = new Vue({
+        el: '#app2',
+        data: {},
+        methods: {},
+        fileters: {},
+        directives: {},
+        components: {//定义内部私有组件
+            login:{
+                template: '<h3>这是app2中的 内部私有 组件</h3>'
+            },
+            msg: {
+                template: '#tmpl'
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

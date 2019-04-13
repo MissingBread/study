@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>客户端JSONP页面</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <script type="text/javascript">
+        function showInfo(data){
+            console.log(data)
+        }
+    </script>
+
+    <script src="http://127.0.0.1:3000/getscript?callback=showInfo"></script>
+</body>
+</html>

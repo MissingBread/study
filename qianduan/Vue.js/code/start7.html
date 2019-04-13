@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="./lib/vue-2.4.0.js"></script>
+<link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+<body>
+    <div id="app">
+        <mycom></mycom>
+        <mycount></mycount>
+        <hr>
+        <mycount></mycount>
+    </div>
+
+    <template id="tmpl">
+        <div>
+            <input type="button" value="+1" @click="increment">
+            <h2>{{ count }}</h2>
+        </div>
+    </template>
+
+    <script type="text/javascript">
+
+        Vue.component('mycom',Vue.extend({
+            //组件中的data数据和实例的使用完全一致
+             template: '<h3>这是一个组件---{{ msg }}</h3>',
+             //组件中的data必须是一个方法，而且要返回一个对象
+             data: function(){
+                return {
+                    msg: '这是组件中的data数据'
+                }
+             }
+        }))
+
+        var dataObj={count : 0}
+        Vue.component('mycount',Vue.extend({
+             template: '#tmpl',
+             data: function(){
+                // return dataObj//使用这种方式会导致所有的组件都是加一个数据
+                return {
+                    count: 0
+                }
+             },
+             methods:{
+                increment(){
+                    this.count++
+                }
+             }
+        }))
+
+        var vm = new Vue({
+        el: '#app',
+        data: {
+
+        },
+        methods:{
+
+        }
+    })
+    </script>
+</body>
+</html>

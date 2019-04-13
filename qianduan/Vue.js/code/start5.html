@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="./lib/vue-2.4.0.js"></script>
+<link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="修改数据" @click="msg='no'">
+        <h4 id="msg">{{ msg }}</h4>
+    </div>
+
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'ok'
+            },
+            methods: {
+                show(){
+                    console.log('hello')
+                }
+            },
+            //开始实例创建
+            beforeCreate(){//实例创建之前执行，此时还没有加载data和methods
+                // console.log(this.msg)
+                // this.show()
+            },
+            created(){//此时data和methods已经初始化完成了
+                // console.log(this.msg)
+                // this.show()
+            },
+            beforeMount(){
+                //模板在内存中编译完成但是尚未渲染到页面中
+                // console.log(document.getElementById('msg').innerText)
+            },
+            mounted(){
+                //此时模板已经挂载到了页面中，用户可以看到已经渲染好的也买你
+                // console.log(document.getElementById('msg').innerText)
+            },
+            //这是实例创建期间的最后一个生命周期函数，当执行完此函数表示实例已经完成创建
+
+            //运行时事件开始
+            beforeUpdate(){
+                //数据发生改变时调用，此时页面还没有被更新
+            //     console.log('界面上元素中的数据是：'+document.getElementById('msg').innerText)
+            //     console.log('data中的数据是：'+this.msg)
+            },
+            updated(){
+                //此时页面中的数据也被更新了
+                console.log('界面上元素中的数据是：'+document.getElementById('msg').innerText)
+                console.log('data中的数据是：'+this.msg)
+            }
+            //运行时结束
+        })
+    </script>
+</body>
+</html>
