@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>获取DOM元素和组件</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="获取元素" @click="getElement">
+        <h3 id="h3" ref="myh3">天气真好</h3>
+        <hr>
+        <login ref="mylogin"></login>
+    </div>
+
+    <script type="text/javascript">
+        var vm=new Vue({
+            el: '#app',
+            data: {},
+            methods: {
+                getElement(){
+                    //使用ref来获取页面的DOM元素
+                    console.log(this.$refs.myh3.innerText)
+                    //也可以获取子组件的数据和方法
+                    console.log(this.$refs.mylogin.msg)
+                    this.$refs.mylogin.show()
+                }
+            },
+            components:{
+                login: {
+                    template: '<h1>组件元素</h1>',
+                    data(){
+                        return {
+                            msg : 'son mag'
+                        }
+                    },
+                    methods:{
+                        show(){
+                            console.log('调用了子组件的方法')
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

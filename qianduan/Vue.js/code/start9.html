@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>组件传值</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h2>由子组件传递过来的数据：{{data.name}} {{data.age}}</h2>
+        <!--父组件在引用子组件的时候，可以将数据以属性绑定的形式传递到子组件内部，供子组件使用-->
+        <com1 v-bind:parentmsg="msg"></com1>
+        <!--父组件可以使用v-on来将父组件的方法提供给子组件使用-->
+        <com2 v-bind:parentmsg="msg" v-on:func1="show"></com2>
+    </div>
+
+    <template id="com2">
+        <div>
+            <h1>这是com2子组件--{{ parentmsg }}</h1>
+            <input type="button" value="调用父组件传递的方法" @click="myclick">
+        </div>
+    </template>
+
+    <script type="text/javascript">
+        var vm=new Vue({
+            el: '#app',
+            data: {
+                msg: 'hello',
+                data: {}
+            },
+            methods:{
+                show(data1){
+                    //传参也是可以的
+                    console.log('父组件中的show方法'+data1)
+                    this.data=data1
+                }
+            },
+            components: {
+                com1:{
+                    data(){
+                        //这里data中的数据是子组件私有的，比如通过ajax返回的数据可以放在这里
+                        //而这里的数据是可读可写的
+                        return {
+                            title: 'dfjkd',
+                            content: 'jfjdk'
+                        }
+                    },
+                    //子组件中默认是无法访问父组件中data上的数据和methods中的方法
+                    template: '<h1>这是一个组件-------{{ parentmsg }}</h1>',
+                    //将父组件中传递过来的值在props中定义以下这样才能使用这个属性
+                    //组件中所有的数据都是通过父组件来传递给子组件的
+                    //这里的数据都是只读的，可以重新赋值，但是不推荐
+                    props: ['parentmsg']
+                },
+                com2: {
+                    template: com2,
+                    props: ['parentmsg'],
+                    data() {
+                        return {
+                            sonmsg: {name: 'nanan ' ,age: 12}
+                        }
+                    },
+                    methods:{
+                        myclick(){
+                            // console.log('ok')
+                            //通过这种方式调用父组件中传递过来的方法
+                            //后面的都是参数
+                            // this.$emit('func1',123,456)
+                            //子组件向父组件传递数据
+                            this.$emit('func1',this.sonmsg)
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
