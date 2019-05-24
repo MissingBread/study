@@ -165,3 +165,98 @@ Vue.component('account',{
 
 ### 获取DOM元素和组件
 + 详见start10.html
+
+## 路由
+### 什么是路由
+1. **后端路由：** 对于普通网站来说，所有链接都是url地址，所有url地址对应了服务器上的一个资源
+2. **前端路由：**对于单页面的程序来说，主要通过url中的hash(#号)来实现不同页面间的切换，同时hash有一个特点，
+Http请求不会包含hash相关的内容。所以单页面跳转主要用hash实现
+
+### 路由的基本使用
+见start11.html
+1. 如何引入路由
+2. 如何创建路由对象并绑定vm实例
+3. router-view和router-link标签的使用
+4. 重定向的使用
+5. 通过默认的类来添加样式,路由高亮 https://router.vuejs.org/zh/api/#exact
+6. 路由规则中定义参数 直接query传参或者在路由规则中匹配
+8. 路由的嵌套，使用children来建立子路由(见start12.html)
+
+### 经典视图案例
+见case3.html,使用命名视图
+
+## Webpack管理工具 
+### 网页静态资源过多导致的问题
+1. 网页加载速度慢，因为需要发起很多二次请求
+2. 处理错综复杂的依赖关系
+
+### 什么是Webpack
+Webpack是一个前端的项目构建工具，基于node.js开发
+* 基于整个项目进行构建
+* 完美实现资源的合并，打包，压缩等
+
+### 配置文件
+* 配置入口和出口
+```
+    const path=require('path')
+
+    module.exports={
+        entry: path.join(__dirname, './src/main.js'),//入口表示webpack要打包哪个文件
+        output:{//输出文件相关配置
+            path: path.join(__dirname, './dist'), //指定打包后文件的输出目录
+            filename: 'bundle.js' //指定输出文件名称
+        }
+    }
+```
+
+### 自动打包
+* 安装webpack-dev-server工具
+* npm i webpack-dev-server -D 在本地项目安装
+* 本地安装无法直接在cmd里面使用，可以修改package.json的scripts，添加"dev": "webpack-dev-server"
+然后直接npm run dev
+* 在"dev": "webpack-dev-server --open --port 3000 --contentBase src --hot"的几个参数如下
+--open 直接打开浏览器 --port 3000启用端口 --contentBase src修改项目默认路径 --hot浏览器自动更新，打包补丁
+>  webpack-dev-server打包后的bundle.js并没有存放到物理磁盘中，而是放在了内存中，所以在项目根目录中
+找不到该文件
+
+## 使用render来渲染组件
+* 使用render渲染后return 的结果会替换页面中el指定的那个容器
+
+## 在webpack中使用vue
+* 通过`import Vue from 'vue'`导入的vue构造函数，功能不完整，只提供了runtime-only的方式，没有提供网页
+那样的使用方式
+* 如果要使用完整的包，可以把node_modules中Vue目录下的package.json的main属性值改为vue.js
+或者是通过`import Vue from '../node_modules/vue/dist/vue.js'`
+* 如果仍然只想使用`import Vue from 'vue'`，可以在webpack.config.js中添加以下代码：
+```
+resolve:{
+    alias:{
+        "vue$": "vue/dist/vue.js"
+    }
+}
+```
+* 由于在webpack中，推荐使用.vue这个组件模板文件定义组件，所以需要安装解析这种文件的loader,
+`npm i vue-loader vue-template-compalier -D`
+* .vue组件有三部分组成，template, script, style
+    ** 在.vue文件的style中定义的样式是全局的样式，如果想私有要加scoped
+> .vue文件只能通过render函数来进行渲染
+
+## 在webpack中使用路由
+* 安装使用参考vue-router官网
+* 注意路由匹配的的组件，只能放到<router-view>中，而不会把vm实例使用render渲染的组件替换
+* 出于模块化的构建，可以把路由单独放到一个文件中
+
+## 其他
+### Es6和node中的导入导出
+* 在Es6中可以使用`import 模块名称 from '模块标识符'`   `import '表示路径'`     来导入模块
+通过`export`和`export default` 向外暴露成员
+    ** 使用`export default` 向外暴露成员，可以使用任意变量来接收，但是在一个模块之中，
+`export default`只能向外暴露一次
+    ** 在一个模块中可以同时使用export 和export default向外暴露成员
+    ** 使用export向外暴露的成员，只能使用{}的形式接收，这种形式，叫做【按需导出】
+    ** export可以暴露多个成员，同时如果某些成员不需要可以在import时不导入
+    ** 使用export导出的成员，必须严格按照导出名字，用{}接收
+    ** 如果使用export导出的成员想换一个名称，可以使用as 来起别名
+* 在node中使用 `var 名称 = require('模块标识符')` 来导入模块
+通过 `module.exports` 和`exports`来暴露成员
+

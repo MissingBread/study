@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>路由的基本使用</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script type="text/javascript" src="./lib/vue-2.4.0.js"></script>
+<!--安装路由-->
+<script type="text/javascript" src="./lib/vue-router-3.0.1.js"></script>
+
+<style type="text/css">
+    .router-link-exact-active {
+        color: red; 
+        font-style: italic;
+    }
+    .myClass {
+        color: green; 
+        font-style: italic;
+    }
+</style>
+
+</head>
+<body>
+    <div id="app">
+        <!-- <a href="#/login">登录</a>
+        <a href="#/register">注册</a> -->
+        
+        <!-- 默认渲染成一个a标签,可以通过tag属性改变，但是一定会绑定一个点击事件 -->
+        <router-link to="/login/12/lisi" tag="span">登录</router-link>
+        <!-- 如果在路由中使用查询字符串给路由传参，则不需要修改路由规则中的path属性 -->
+        <router-link to="/register?id=10&name=zs">注册</router-link>
+        <!--vue-router提供的占位符，将匹配的地址放到这个占位符中-->
+        <router-view></router-view>
+    </div>
+
+    <script type="text/javascript">
+
+        //模板对象
+        var login={
+            //传参方式2
+            template: '<h1>登录组件---{{ $route.params.id }}---{{ $route.params.name }}</h1>'
+        }
+        var register={
+            //传递的参数可以这样调用
+            template: '<h1>注册组件---{{ $route.query.id }}---{{ $route.query.name }}</h1>',
+            created(){//组件生命周期钩子
+                //传参方式1
+                // console.log(this.$route)
+                //可以通过这种方式获取url参数的查询传参
+                console.log(this.$route.query.id)
+            }
+        }
+        
+        //创建一个路由对象
+        var routerObj=new VueRouter({
+            //routes表示路由匹配规则
+            routes: [
+                //每个路由规则都是一个对象，有两个属性
+                //属性1：path表示监听的路由地址链接，属性2：component表示如果路由匹配到path,展示哪一个component
+                //component属性值必须是一个组件模板对象，而不是组件名称
+                // {path: '/' , component: login}, 不推荐，浏览器的地址不会变
+                {path: '/' , redirect: '/login'},
+                //传参方式2
+                {path: '/login/:id/:name' , component: login},
+                {path: '/register' , component: register}
+            ],
+            //更改默认的样式
+            linkExactActiveClass: 'myClass'
+
+        })
+
+        var vm=new Vue({
+            el: '#app',
+            date: {},
+            methods: {},
+            //将路由规则对象注册到vm对象上，监听url变化，展示对象的组件
+            router: routerObj
+        });
+
+    </script>
+</body>
+</html>

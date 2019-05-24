@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>路由的嵌套</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script type="text/javascript" src="./lib/vue-2.4.0.js"></script>
+<!--安装路由-->
+<script type="text/javascript" src="./lib/vue-router-3.0.1.js"></script>
+</head>
+<body>
+     <div id="app">
+        <router-link to="/account">Account</router-link>
+        <router-view></router-view>
+    </div>
+
+    <template id="tmpl">
+        <div>
+            <h1>这是account组件</h1>
+            <router-link to="/account/login">登录</router-link>
+            <router-link to="/account/register">注册</router-link>
+            <router-view></router-view>
+        </div>
+    </template>
+
+<script type="text/javascript">
+
+    var account={
+        template: '#tmpl'
+    }
+
+    var login={
+        template: '<h2>登录</h2>'
+    }
+
+    var register={
+        template: '<h2>注册</h2>'
+    }
+
+    var router=new VueRouter({
+        routes: [
+            { path: '/account' , 
+            component: account ,
+            children: [
+            //此时子路由中不要带斜线
+                { path: 'login' , component: login },
+                { path: 'register' , component: register }
+            ]
+        }
+            //这样的路径和/account是平级的，所以没用
+            // {path: '/account/login' , component: login },
+            // {path: '/account/register' , component: register }
+        ]
+    })
+
+     var vm=new Vue({
+            el: '#app',
+            date: {},
+            methods: {},
+            router: router
+        });
+</script>
+
+</body>
+</html>

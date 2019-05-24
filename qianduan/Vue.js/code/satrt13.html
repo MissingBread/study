@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>使用render渲染组件</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<script type="text/javascript" src="./lib/vue-2.4.0.js"></script>
+<!--安装路由-->
+<script type="text/javascript" src="./lib/vue-router-3.0.1.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <p>因为render会把组件替换，所以这里的内容是看不见的</p>
+    </div>
+
+<script type="text/javascript">
+
+    var login={
+        template: '<h1>登录组件</h1>'
+    }
+
+     var vm=new Vue({
+            el: '#app',
+            date: {},
+            methods: {},
+            render: function(createElements){//createElements是一个方法，调用它可以将指定的组件模板渲染为html结构
+                return createElements(login)
+            }
+        });
+</script>
+
+</body>
+</html>
