@@ -99,3 +99,72 @@ netty基于NIO模型
 * 服务暴露
 * 服务引用
 * 服务调用
+
+##dubbo stater
+### Dubbo控制台文档
+* https://github.com/apache/dubbo-admin/blob/develop/README_ZH.md
+
+### Dubbo快速开始
+* https://github.com/apache/dubbo-spring-boot-project/blob/master/README_CN.md
+
+### Dubbo的负载均衡
+http://dubbo.apache.org/zh-cn/docs/user/demos/loadbalance.html
+
+### Dubbo的快速序列化
+http://dubbo.apache.org/zh-cn/docs/user/demos/serialization.html
+* 添加一下依赖
+```
+<dependency>
+            <groupId>de.javakaffee</groupId>
+            <artifactId>kryo-serializers</artifactId>
+            <version>0.45</version>
+        </dependency>
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+````
+
+### 使用Hystrix实现服务熔断
+* 添加以下依赖
+```
+<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-hystrix -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+    <version>2.1.1.RELEASE</version>
+</dependency>
+
+```
+* 在提供者主类中添加注解@EnableHystrix
+* 在提供者实现类的方法中添加@HystrixCommand
+* 在消费者的调用类中增加 @HystrixCommand(fallbackMethod = "hiHystrix")，并添加回调方法hiHystrix（）
+
+#### 使用熔断器的仪表盘监控
+* 在服务消费者中添加以下依赖
+```
+<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-hystrix-dashboard -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+    <version>2.1.1.RELEASE</version>
+</dependency>
+```
+* 在主类中添加注解@EnableHystrixDashboard
+* 然后添加一个配置类
+```
+@Configuration
+public class HystrixDashboardConfiguration {
+    @Bean
+    public ServletRegistrationBean getServlet(){
+        HystrixMetricsStreamServlet streamServlet=new HystrixMetricsStreamServlet();
+        ServletRegistrationBean registrationBean=new ServletRegistrationBean(streamServlet);
+        registrationBean.setLoadOnStartup(1);
+        registrationBean.addUrlMappings("/hystrix.stream");
+        registrationBean.setName("HystrixMetricsStreamServlet");
+        return registrationBean;
+    }
+}
+```
+
